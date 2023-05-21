@@ -36,17 +36,19 @@ function renderDirections (heading: number) {
   // render the cardinal directions
   const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
   const steps = 360 / directions.length
-
+  
+  
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i]
     const x = getScreenHeading(heading + (i * steps))
     if (notWithinBounds(x, compassWidth)) continue
+    const alpha = getAlphaFromBounds(x, compassWidth)
 
     if (i % 2 === 0) {
-      renderText(direction, x, compassY + 0.01,  0.35, 0)
+      renderText(direction, x, compassY + 0.01,  0.35, 0, 255, 255, 255, alpha)
       continue
     }
-    renderText(direction, x, compassY + 0.01, 0.2, 0)
+    renderText(direction, x, compassY + 0.01, 0.2, 0, 255, 255, 255, alpha)
   }
 }
 
@@ -55,22 +57,23 @@ function renderLines (heading: number) {
   for (let i = 0; i < 360; i += 15) {
     const x = getScreenHeading(heading + i)
     if (notWithinBounds(x, compassWidth)) continue
+    const alpha = getAlphaFromBounds(x, compassWidth)
 
     // draw degree text    
-    renderText(i.toString(), x, compassY - 0.025, 0.15, 0)
+    renderText(i.toString(), x, compassY - 0.025, 0.15, 0, 255, 255, 255, alpha)
       
     // draw bigger line every 90 degrees
     if (i % 90 === 0) {
-      DrawRect(x, compassY, 0.001, 0.015, 255, 255, 255, 255)
+      DrawRect(x, compassY, 0.001, 0.015, 255, 255, 255, alpha)
       continue
     }
     // draw medium line every 45 degrees
     if (i % 45 === 0) {
-      DrawRect(x, compassY, 0.001, 0.01, 255, 255, 255, 255)
+      DrawRect(x, compassY, 0.001, 0.01, 255, 255, 255, alpha)
       continue
     }
     // draw smaller line every 15 degrees
-    DrawRect(x, compassY, 0.001, 0.002, 255, 255, 255, 255)
+    DrawRect(x, compassY, 0.001, 0.002, 255, 255, 255, alpha)
   }
 }
 
@@ -89,14 +92,12 @@ function notWithinBounds (x: number, width: number) {
   return x < 0.5 - halfWidth || x > 0.5 + halfWidth
 }
 
-function renderText(text: string, x: number, y: number, scale: number, font: number) {
+const getAlphaFromBounds = (x: number, width: number) => Math.round(255 - (255 * (Math.abs(0.5 - x) / (width / 2))))
+
+function renderText(text: string, x: number, y: number, scale: number, font: number, r = 255, g = 255, b = 255, a = 255) {
   SetTextFont(font)
-  SetTextProportional(false)
   SetTextScale(scale, scale)
-  SetTextColour(255, 255, 255, 255)
-  SetTextDropshadow(0, 0, 0, 0, 255)
-  SetTextEdge(2, 0, 0, 0, 150)
-  SetTextDropShadow()
+  SetTextColour(r, g, b, a)
   SetTextOutline()
   SetTextEntry("STRING")
   SetTextJustification(0)
