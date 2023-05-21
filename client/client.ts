@@ -27,9 +27,8 @@ function renderCompass() {
   // draw triangle in the middle of the compass
   DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 125)
 
-  // total 150 μs
-  renderDirections(heading) // 77 μs
-  renderLines(heading) // 93 μs
+  renderDirections(heading)
+  renderLines(heading)
 }
 
 function renderDirections (heading: number) {
@@ -78,9 +77,8 @@ function renderLines (heading: number) {
 }
 
 function getScreenHeading (heading: number) {
-  let x = 1 - (0.5 - (heading / 360))
-  if (x > 1) x -= 1 // wrap around
-  return x
+  let x = 0.5 + (heading / 360)
+  return x > 1 ? x - 1 : x
 }
 
 function getHeading () {
@@ -88,11 +86,12 @@ function getHeading () {
 }
 
 function notWithinBounds (x: number, width: number) {
-  const halfWidth = width / 2
-  return x < 0.5 - halfWidth || x > 0.5 + halfWidth
+  return Math.abs(x - 0.5) > width / 2
 }
 
-const getAlphaFromBounds = (x: number, width: number) => Math.round(255 - (255 * (Math.abs(0.5 - x) / (width / 2))))
+function getAlphaFromBounds (x: number, width: number) {
+  return Math.round(255 - (255 * (Math.abs(0.5 - x) / (width / 2))))
+}
 
 function renderText(text: string, x: number, y: number, scale: number, font: number, r = 255, g = 255, b = 255, a = 255) {
   SetTextFont(font)
