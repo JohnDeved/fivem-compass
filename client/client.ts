@@ -25,7 +25,7 @@ function renderCompass() {
   const heading = getHeading()
 
   // draw triangle in the middle of the compass
-  DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 255)
+  DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 125)
 
   // total 150 μs
   renderDirections(heading) // 77 μs
