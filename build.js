@@ -24,7 +24,7 @@ const client = {
   format: 'iife',
 };
 
-for (const context of [ 'client', 'server' ]) {
+for (const context of [ 'client' ]) {
   esbuild.build({
     bundle: true,
     entryPoints: [`${context}/${context}.ts`],
