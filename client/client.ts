@@ -25,7 +25,7 @@ function renderCompass() {
   const heading = getHeading()
 
   // draw triangle in the middle
-  DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 255)
+  drawRect(0.5, compassY, 0.001, 0.015)
 
   const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
   const steps = 360 / directions.length
@@ -33,36 +33,36 @@ function renderCompass() {
   // render the cardinal directions
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i]
-    let x = getScreenHeading(heading + (i * steps))
-    if (!isWithinBounds(x, compassWidth)) continue
+    const x = getScreenHeading(heading + (i * steps))
+    if (notWithinBounds(x, compassWidth)) continue
 
     if (i % 2 === 0) {
-      renderText(direction, x, compassY + 0.01,  0.35, 0, 255, 255, 255, 255)
+      renderText(direction, x, compassY + 0.01,  0.35, 0)
       continue
     }
-    renderText(direction, x, compassY + 0.01, 0.2, 0, 255, 255, 255, 255)
+    renderText(direction, x, compassY + 0.01, 0.2, 0)
   }
 
   // render direction lines every 15 degrees
   for (let i = 0; i < 360; i += 15) {
-    let x = getScreenHeading(heading + i)
-    if (!isWithinBounds(x, compassWidth)) continue
+    const x = getScreenHeading(heading + i)
+    if (notWithinBounds(x, compassWidth)) continue
 
     // draw degree text    
-    renderText(i.toString(), x, compassY - 0.025, 0.15, 0, 255, 255, 255, 255)
+    renderText(i.toString(), x, compassY - 0.025, 0.15, 0)
       
     // draw bigger line every 90 degrees
     if (i % 90 === 0) {
-      DrawRect(x, compassY, 0.001, 0.015, 255, 255, 255, 255)
+      drawRect(x, compassY, 0.001, 0.015)
       continue
     }
     // draw medium line every 45 degrees
     if (i % 45 === 0) {
-      DrawRect(x, compassY, 0.001, 0.01, 255, 255, 255, 255)
+      drawRect(x, compassY, 0.001, 0.01)
       continue
     }
     // draw smaller line every 15 degrees
-    DrawRect(x, compassY, 0.001, 0.002, 255, 255, 255, 255)
+    drawRect(x, compassY, 0.001, 0.002)
   }
 }
 
@@ -73,19 +73,19 @@ function getScreenHeading (heading: number) {
 }
 
 function getHeading () {
-  const [,, heading] = GetGameplayCamRot(2)
-  return heading // is -180 to 180, where 0 is north
+  return GetGameplayCamRot(2)[2] // is -180 to 180, where 0 is north
 }
 
-function isWithinBounds (x: number, width: number) {
-  return x >= 0.5 - width / 2 && x <= 0.5 + width / 2
+function notWithinBounds (x: number, width: number) {
+  const halfWidth = width / 2
+  return x < 0.5 - halfWidth || x > 0.5 + halfWidth
 }
 
-function renderText(text: string, x: number, y: number, scale: number, font: number, r: number, g: number, b: number, a: number) {
+function renderText(text: string, x: number, y: number, scale: number, font: number) {
   SetTextFont(font)
   SetTextProportional(false)
   SetTextScale(scale, scale)
-  SetTextColour(r, g, b, a)
+  SetTextColour(255, 255, 255, 255)
   SetTextDropshadow(0, 0, 0, 0, 255)
   SetTextEdge(2, 0, 0, 0, 150)
   SetTextDropShadow()
@@ -94,4 +94,8 @@ function renderText(text: string, x: number, y: number, scale: number, font: num
   SetTextJustification(0)
   AddTextComponentString(text)
   DrawText(x, y)
+}
+
+function drawRect (x: number, y: number, width: number, height: number) {
+  DrawRect(x, y, width, height, 255, 255, 255, 255)
 }
