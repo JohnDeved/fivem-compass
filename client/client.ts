@@ -24,13 +24,19 @@ setTick(() => {
 function renderCompass() {
   const heading = getHeading()
 
-  // draw triangle in the middle
+  // draw triangle in the middle of the compass
   DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 255)
 
+  // total 150 μs
+  renderDirections(heading) // 77 μs
+  renderLines(heading) // 93 μs
+}
+
+function renderDirections (heading: number) {
+  // render the cardinal directions
   const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
   const steps = 360 / directions.length
 
-  // render the cardinal directions
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i]
     const x = getScreenHeading(heading + (i * steps))
@@ -42,7 +48,9 @@ function renderCompass() {
     }
     renderText(direction, x, compassY + 0.01, 0.2, 0)
   }
+}
 
+function renderLines (heading: number) {
   // render direction lines every 15 degrees
   for (let i = 0; i < 360; i += 15) {
     const x = getScreenHeading(heading + i)
