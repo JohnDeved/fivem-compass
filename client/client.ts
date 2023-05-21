@@ -25,7 +25,7 @@ function renderCompass() {
   const heading = getHeading()
 
   // draw triangle in the middle
-  drawRect(0.5, compassY, 0.001, 0.015)
+  DrawRect(0.5, compassY, 0.001, 0.015, 255, 255, 255, 255)
 
   const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
   const steps = 360 / directions.length
@@ -53,16 +53,16 @@ function renderCompass() {
       
     // draw bigger line every 90 degrees
     if (i % 90 === 0) {
-      drawRect(x, compassY, 0.001, 0.015)
+      DrawRect(x, compassY, 0.001, 0.015, 255, 255, 255, 255)
       continue
     }
     // draw medium line every 45 degrees
     if (i % 45 === 0) {
-      drawRect(x, compassY, 0.001, 0.01)
+      DrawRect(x, compassY, 0.001, 0.01, 255, 255, 255, 255)
       continue
     }
     // draw smaller line every 15 degrees
-    drawRect(x, compassY, 0.001, 0.002)
+    DrawRect(x, compassY, 0.001, 0.002, 255, 255, 255, 255)
   }
 }
 
@@ -94,8 +94,4 @@ function renderText(text: string, x: number, y: number, scale: number, font: num
   SetTextJustification(0)
   AddTextComponentString(text)
   DrawText(x, y)
-}
-
-function drawRect (x: number, y: number, width: number, height: number) {
-  DrawRect(x, y, width, height, 255, 255, 255, 255)
 }
