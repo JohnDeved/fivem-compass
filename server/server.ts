@@ -1,0 +1,1 @@
+console.log("[compass] Server Resource Started");
