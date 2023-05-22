@@ -5,7 +5,7 @@
 - compass toggle setting saved to client locally
 - rendertime of ~100μs per tick
 
-<img width="100%" alt="image" src="https://github.com/JohnDeved/fivem-compass/assets/24187269/87540581-aa33-45f4-b73c-b93654150243">
+<img width="100%" alt="image" src="https://github.com/JohnDeved/fivem-compass/assets/24187269/8c4944b9-eb68-4504-82bd-26453753def1">
 
 # exports
 
