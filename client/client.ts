@@ -4,6 +4,8 @@ console.log("[compass] Client Resource Started")
 let isCompassVisible = Boolean(GetResourceKvpInt("compass:visible"))
 const compassWidth = 0.35
 const compassY = 0.1
+const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
+const directionTicks = 360 / directions.length
 
 // register command to toggle compass
 RegisterCommand("compass", () => {
@@ -33,13 +35,9 @@ function renderCompass() {
 
 function renderDirections (heading: number) {
   // render the cardinal directions
-  const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"] as const
-  const steps = 360 / directions.length
-  
-  
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i]
-    const x = getScreenHeading(heading + (i * steps))
+    const x = getScreenHeading(heading + (i * directionTicks))
     if (notWithinBounds(x, compassWidth)) continue
     const alpha = getAlphaFromBounds(x, compassWidth)
 
