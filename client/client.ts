@@ -103,7 +103,7 @@ function getAlphaFromBounds (x: number, width: number) {
   return Math.round(255 - (255 * (Math.abs(0.5 - x) / (width / 2))))
 }
 
-function renderText(text: string, x: number, y: number, scale: number, font: number, r = 255, g = 255, b = 255, a = 255) {
+function renderText(text: string, x: number, y: number, scale: number, font: number, r: number, g: number, b: number, a: number) {
   SetTextFont(font)
   SetTextScale(scale, scale)
   SetTextColour(r, g, b, a)
