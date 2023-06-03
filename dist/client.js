@@ -66,7 +66,7 @@
     }
   }
   function getScreenHeading(heading) {
-    let x = 0.5 + heading / 360;
+    const x = 0.5 + heading / 360;
     return x > 1 ? x - 1 : x;
   }
   function getHeading() {

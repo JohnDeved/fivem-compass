@@ -1,41 +1,41 @@
-console.log("[compass] Client Resource Started")
+console.log('[compass] Client Resource Started')
 
-globalThis.exports("compass:toggle", toggleCompass)
-globalThis.exports("compass:setSettings", setSettings)
+globalThis.exports('compass:toggle', toggleCompass)
+globalThis.exports('compass:setSettings', setSettings)
 
 const settings = {
   // get the compass visibility from the resource kvps
-  isCompassVisible: Boolean(GetResourceKvpInt("compass:visible")),
+  isCompassVisible: Boolean(GetResourceKvpInt('compass:visible')),
   compassWidth: 0.35,
   compassY: 0.1,
   compassColor: [255, 255, 255] as [number, number, number],
-  directions: ["N", "NO", "O", "SO", "S", "SW", "W", "NW"],
-  controlKey: 311 // "K"
+  directions: ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'],
+  controlKey: 311, // "K"
 }
 
 // register command to toggle compass
-RegisterCommand("compass", toggleCompass, false)
+RegisterCommand('compass', toggleCompass, false)
 
 function setSettings (s: Partial<typeof settings>) {
   Object.assign(settings, s)
 }
 
-function toggleCompass() {
+function toggleCompass () {
   settings.isCompassVisible = !settings.isCompassVisible
-  console.log("[compass] Toggling compass", settings.isCompassVisible)
-  SetResourceKvpInt("compass:visible", Number(settings.isCompassVisible))
+  console.log('[compass] Toggling compass', settings.isCompassVisible)
+  SetResourceKvpInt('compass:visible', Number(settings.isCompassVisible))
 }
 
 setTick(() => {
   if (settings.isCompassVisible) return renderCompass()
-  
+
   // if key "K" is pressed down, render the compass
   if (IsControlPressed(0, settings.controlKey)) {
     renderCompass()
   }
 })
 
-function renderCompass() {
+function renderCompass () {
   const heading = getHeading()
 
   // draw triangle in the middle of the compass
@@ -54,7 +54,7 @@ function renderDirections (heading: number) {
     const alpha = getAlphaFromBounds(x, settings.compassWidth)
 
     if (i % 2 === 0) {
-      renderText(direction, x, settings.compassY + 0.01,  0.35, 0, ...settings.compassColor, alpha)
+      renderText(direction, x, settings.compassY + 0.01, 0.35, 0, ...settings.compassColor, alpha)
       continue
     }
     renderText(direction, x, settings.compassY + 0.01, 0.2, 0, ...settings.compassColor, alpha)
@@ -68,9 +68,9 @@ function renderLines (heading: number) {
     if (notWithinBounds(x, settings.compassWidth)) continue
     const alpha = getAlphaFromBounds(x, settings.compassWidth)
 
-    // draw degree text    
+    // draw degree text
     renderText(i.toString(), x, settings.compassY - 0.025, 0.15, 0, ...settings.compassColor, alpha)
-      
+
     // draw bigger line every 90 degrees
     if (i % 90 === 0) {
       DrawRect(x, settings.compassY, 0.001, 0.015, ...settings.compassColor, alpha)
@@ -87,7 +87,7 @@ function renderLines (heading: number) {
 }
 
 function getScreenHeading (heading: number) {
-  let x = 0.5 + (heading / 360)
+  const x = 0.5 + (heading / 360)
   return x > 1 ? x - 1 : x
 }
 
@@ -103,12 +103,12 @@ function getAlphaFromBounds (x: number, width: number) {
   return Math.round(255 - (255 * (Math.abs(0.5 - x) / (width / 2))))
 }
 
-function renderText(text: string, x: number, y: number, scale: number, font: number, r: number, g: number, b: number, a: number) {
+function renderText (text: string, x: number, y: number, scale: number, font: number, r: number, g: number, b: number, a: number) {
   SetTextFont(font)
   SetTextScale(scale, scale)
   SetTextColour(r, g, b, a)
   SetTextOutline()
-  SetTextEntry("STRING")
+  SetTextEntry('STRING')
   SetTextJustification(0)
   AddTextComponentString(text)
   DrawText(x, y)
